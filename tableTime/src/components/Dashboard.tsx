@@ -5,7 +5,6 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 export const Dashboard = () => {
     const navigate = useNavigate()
     const location = useLocation()
-    console.log("location: ", location)
     const isRestaurantDetailPage = /^\/restaurants\/[a-zA-Z0-9]+$/.test(location.pathname);
 
     return (

@@ -8,7 +8,6 @@ export const Login = () => {
     })
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        console.log("first")
     }
     const handleChange = (name: string, value: string) => {
         setLoginInfo(prev => ({
