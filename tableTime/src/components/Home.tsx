@@ -1,6 +1,5 @@
 
 import { IoArrowForwardCircleSharp } from 'react-icons/io5'
-import landingBg from './../assets/landingBg.jpg'
 import { useNavigate } from 'react-router-dom'
 export const Home = () => {
   const navigate = useNavigate();

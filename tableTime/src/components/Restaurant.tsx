@@ -2,24 +2,48 @@ import { IoChevronBackOutline, IoLocationSharp } from 'react-icons/io5'
 import food from './../assets/food1.jpg'
 import r1 from './../assets/restaurantsList/r1.jpg'
 import location from './../assets/location.png'
-import { useNavigate } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useNavigate, useOutletContext } from 'react-router-dom'
+import { useEffect, useState, type SetStateAction } from 'react'
 import { AvailableTableModal } from './AvailableTableModal'
 import { getRestaurantById } from '../service/restaurantsService'
-import type { menuItemDetail, RestaurantDetail } from './../common/interface/interface'
+import type { AvailableTableDetails, CapacityWiseTableDetails, menuItemDetail, RestaurantDetail } from './../common/interface/interface'
 import { fetchMenuItemsByIdService } from '../service/menuItemsService'
+import { getAvailableTableDetailsById } from '../service/restaurantTableService'
+import { trackPromise } from 'react-promise-tracker'
+type ContextType = {
+    setRestaurantData: React.Dispatch<SetStateAction<RestaurantDetail>>
+    setCapacityWiseTable: React.Dispatch<SetStateAction<CapacityWiseTableDetails[]>>
+    setAvailableTable: React.Dispatch<SetStateAction<AvailableTableDetails[]>>
+    availableTable: AvailableTableDetails[]
+}
 export const Restaurant = () => {
     const navigate = useNavigate()
+    const { setRestaurantData, setCapacityWiseTable, setAvailableTable, availableTable } = useOutletContext<ContextType>()
     const [restaurantDetail, setRestaurantDetail] = useState<RestaurantDetail>()
     const [menuItems, setMenuItems] = useState<menuItemDetail[]>([])
     const [showAvailableTable, setShowAvailableTable] = useState<boolean>(false)
+    const [totalTables, setTotalTables] = useState<number>()
+
     const fetchRestaurantDetailsById = async (id: string) => {
         const response = await getRestaurantById(id)
         setRestaurantDetail(response[0])
+        setRestaurantData(response[0])
     }
     const fetchMenuItemsById = async (id: string) => {
-        const menuItems = await fetchMenuItemsByIdService(id)
+        const menuItems = await trackPromise(fetchMenuItemsByIdService(id))
         setMenuItems(menuItems)
+    }
+    const fetchAvailableTableData = async () => {
+        const id = window.location.pathname.split('/')[2]
+        const response = await trackPromise(getAvailableTableDetailsById(id))
+        console.log("response:", response)
+        const capacityWiseTableDetails = response.capacityWiseTableDetails
+        setCapacityWiseTable(() => capacityWiseTableDetails)
+        const totalTables = response.total_tables
+        const availableTableDetails = response.availableTableDetails
+        setTotalTables(totalTables)
+        setAvailableTable(availableTableDetails)
+        setShowAvailableTable(true)
     }
     useEffect(() => {
         const id = window.location.pathname.split('/')[2]
@@ -30,11 +54,10 @@ export const Restaurant = () => {
     if (restaurantDetail && Object.entries(restaurantDetail).length > 0) {
         return (
             <div className="h-full">
-                {showAvailableTable && (<div className=' fixed w-full h-screen z-20 flex justify-center items-center' >
+                {showAvailableTable && totalTables && (<div className=' fixed w-full h-screen z-20 flex justify-center items-center' >
                     <div className='bg-black fixed w-full h-screen opacity-35'></div>
-                    <AvailableTableModal close={() => {
+                    <AvailableTableModal numOfAvailableTable={availableTable.length} totalTables={totalTables} close={() => {
                         setShowAvailableTable(false)
-                        navigate('/restaurants/booking/123')
                     }} />
                 </div>)}
                 <div className="relative">
@@ -93,11 +116,9 @@ export const Restaurant = () => {
                     </div>
                 </div>
                 <div className='flex justify-center'>
-                    <button onClick={() => setShowAvailableTable(true)} className='fixed bg-primary rounded-md font-semibold text-xl text-white py-2 px-2 bottom-4 w-[80%]'>Check Available Table</button>
+                    <button onClick={() => fetchAvailableTableData()} className='fixed bg-primary rounded-md font-semibold text-xl text-white py-2 px-2 bottom-4 w-[80%]'>Check Available Table</button>
                 </div>
             </div>
         )
-    } else {
-        return <div>No Detailes Found</div>
     }
 }

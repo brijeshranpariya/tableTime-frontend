@@ -24,3 +24,30 @@ export interface menuItemDetail {
   price: number;
   is_available: boolean;
 }
+
+export interface AvailableTableDetails {
+  total_capacity: number;
+  location: string;
+  restaurant_id: string;
+  status: string;
+  table_id: string;
+}
+export interface CapacityWiseTableDetails {
+  total_capacity: number;
+  tableCount: number;
+}
+export interface tableBookingFormData {
+  countryCode: string;
+  phoneNumber: string;
+  tableCapacity: number;
+  expectedArrivalTime: string;
+  numberOfGuest: number;
+  additionalNote?: string;
+}
+export interface tableBookingFormDataError {
+  phoneNumber: string;
+  tableCapacity: string;
+  expectedArrivalTime: string;
+  numberOfGuest: string;
+  additionalNotes?: string;
+}
