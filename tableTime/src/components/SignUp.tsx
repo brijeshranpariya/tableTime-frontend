@@ -1,7 +1,7 @@
 import { useRef, useState } from "react"
 import { FaArrowLeftLong } from "react-icons/fa6"
 import { useNavigate } from "react-router-dom";
-import { isValidPhoneNumber } from "../Utils/functions";
+import { isValidPhoneNumber, setCookie } from "../Utils/functions";
 import { BUTTON_TEXT } from "../common/enums/enums";
 import { generateOtpService, resendOTP, verifyOTP } from "../service/customerSignUpService";
 import { toast } from "react-toastify";
@@ -31,7 +31,8 @@ export const SignUp = () => {
             const input = countryCode.includes("+")
                 ? countryCode + phoneNumber
                 : `+${countryCode + phoneNumber}`;
-            const otp = await generateOtpService(input)
+            const data = await generateOtpService(input)
+            const otp = data.OTP
             if (otp && String(otp).length === 6) {
                 console.log("otp: ", otp)
                 setIsOtpSent(true)
@@ -46,14 +47,15 @@ export const SignUp = () => {
                 const input = countryCode.includes("+")
                     ? countryCode + phoneNumber
                     : `+${countryCode + phoneNumber}`;
-                const verified: boolean = await verifyOTP(input, OTP)
-                if (verified) {
+                const result: { verified: boolean, token: string } = await verifyOTP(input, OTP)
+                if (result.verified) {
                     navigate('/restaurants')
+                    setCookie('token', result.token, 600000 * 10)
                 } else {
                     window.location.reload()
                 }
             }
-        }
+        }   
     }
     return (
         <div className='grid grid-rows-12 h-full' >

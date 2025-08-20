@@ -15,7 +15,7 @@ export const RestaurantsList = () => {
         getRestaurantDetails()
     }, [])
     return (
-        <div className='grid grid-cols-2 gap-2'>
+        <div className='grid grid-cols-2 gap-2 mx-2 my-2'>
             <div className='col-span-2 my-1 mx-2'>
                 <input type="text" name="" id="" placeholder="Let's find restaurant for you" className='w-full rounded-md border border-gray-300 p-2' />
             </div>

@@ -1,16 +1,23 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 import { FrontendRoutes } from "../common/enums/enums";
+import { getCookie, navigateToSignUp } from "../Utils/functions";
 
 export const getAvailableTableDetailsById = async (id: string) => {
   try {
     const response = await axios.get(
-      `${FrontendRoutes.RESTAURANT_TABLE_URL}/${id}`
+      `${FrontendRoutes.RESTAURANT_TABLE_URL}/${id}`,
+      {
+        headers: {
+          token: getCookie("token"),
+        },
+      }
     );
     const tableDetails = response.data.tableDetails;
     return tableDetails;
   } catch (err) {
     if (axios.isAxiosError(err)) {
+      if (err.response) navigateToSignUp(err.response?.status);
       const message =
         err.response?.data.message ||
         "Failed to fetch available table details.";

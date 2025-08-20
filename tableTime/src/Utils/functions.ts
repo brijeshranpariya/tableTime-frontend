@@ -1,7 +1,8 @@
 import parsePhoneNumberFromString from "libphonenumber-js";
 import { REGEX } from "../common/enums/enums";
 import type { AvailableTableDetails } from "../common/interface/interface";
-
+import Cookies from "universal-cookie";
+const cookies = new Cookies();
 export const validateEmail = (email: string) => {
   const emailRegex = new RegExp(REGEX.EMAIL);
   return emailRegex.test(email.trim());
@@ -44,4 +45,26 @@ export const findClosestGreater = (
     return filteredTables;
   }
   return [];
+};
+
+export const setCookie = (name: string, value: string, time: number) => {
+  let expires = "";
+  if (time) {
+    const date = new Date();
+    date.setTime(date.getTime() + time);
+    expires = "; expires=" + date.toUTCString();
+  }
+  document.cookie =
+    name + "=" + encodeURIComponent(value) + expires + ";path= / ";
+};
+export const getCookie = (key: string) => {
+  const token = cookies.get(key);
+  return token;
+};
+
+export const navigateToSignUp = (statusCode: number) => {
+  if (statusCode == 401 || statusCode == 403) {
+    window.location.href = import.meta.env.VITE_FRONTEND_LINK;
+    console.log("url: ", window.location);
+  }
 };

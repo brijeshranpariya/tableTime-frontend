@@ -10,8 +10,8 @@ export const generateOtpService = async (phoneNumber: String) => {
         phoneNumber,
       }
     );
-    const otp = response.data.OTP;
-    return otp;
+    const data = response.data;
+    return data;
   } catch (err) {
     if (axios.isAxiosError(err)) {
       const message =
@@ -36,14 +36,14 @@ export const verifyOTP = async (phoneNumber: string, OTP: string) => {
         OTP,
       }
     );
-    const verified = response.data.verified;
-    if (verified) {
+    const data = response.data;
+    if (data.verified) {
       toast.success(response.data.message, {
         position: "top-center",
         autoClose: 3000,
       });
     }
-    return verified;
+    return data;
   } catch (err) {
     if (axios.isAxiosError(err)) {
       const message =

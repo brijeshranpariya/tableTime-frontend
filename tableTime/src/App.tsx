@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom'
 import './App.css'
 import { Login } from './components/Login'
 import { RestaurantsList } from './components/RestaurantsList'
@@ -10,8 +10,17 @@ import { MyFavorite } from './components/MyFavorite'
 import { CustomerAccount } from './components/CustomerAccount'
 import { Home } from './components/Home'
 import { SignUp } from './components/SignUp'
+import { useEffect } from 'react'
+import { getCookie } from './Utils/functions'
 function App() {
+  const navigate = useNavigate()
+  useEffect(() => {
 
+    const token = getCookie("token")
+    if (!token || token.length <= 0) {
+      navigate('/')
+    }
+  }, [])
   return (
     <>
       <div className="h-full">
