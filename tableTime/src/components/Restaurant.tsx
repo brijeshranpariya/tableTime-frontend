@@ -2,7 +2,7 @@ import { IoChevronBackOutline, IoLocationSharp } from 'react-icons/io5'
 import food from './../assets/food1.jpg'
 import r1 from './../assets/restaurantsList/r1.jpg'
 import location from './../assets/location.png'
-import { useNavigate, useOutletContext } from 'react-router-dom'
+import { Link, useNavigate, useOutletContext } from 'react-router-dom'
 import { useEffect, useState, type SetStateAction } from 'react'
 import { AvailableTableModal } from './AvailableTableModal'
 import { getRestaurantById } from '../service/restaurantsService'
@@ -94,7 +94,7 @@ export const Restaurant = () => {
                     </div>
                     <div className='flex justify-between text-lg'>
                         <p className='my-2 font-semibold text-gray-400'>FOODS</p>
-                        <p className='my-2 font-medium text-primary hover:cursor-pointer'>See More</p>
+                        <p className='my-2 font-medium text-primary hover:cursor-pointer'><Link to={`/restaurants/${restaurantDetail.id}/food-list`}>See More</Link></p>
                     </div>
                     <div className='pb-10'>
                         <div className='flex flex-col gap-2'>

@@ -12,6 +12,7 @@ import { Home } from './components/Home'
 import { SignUp } from './components/SignUp'
 import { useEffect } from 'react'
 import { getCookie } from './Utils/functions'
+import { FoodList } from './components/FoodList'
 function App() {
   const navigate = useNavigate()
   useEffect(() => {
@@ -35,9 +36,13 @@ function App() {
               <Route path='/restaurants' element={<RestaurantsList />} />
               <Route path='/restaurants/booking/:id' element={<BookingTable />} />
               <Route path='/my-bookings' element={<MyBookings />} />
-              <Route path='/restaurants/:id' element={<Restaurant />} />
+              <Route path='restaurants/:id'>
+                <Route index element={<Restaurant />} />  {/* optional default */}
+                <Route path='food-list' element={<FoodList />} />
+              </Route>
               <Route path='/my-favorite' element={<MyFavorite />} />
               <Route path='/my-account' element={<CustomerAccount />} />
+              <Route path='/restaurants/:id/food-list' element={<FoodList />} />
             </Route>
           </Routes>
         </div>

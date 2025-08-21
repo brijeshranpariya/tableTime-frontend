@@ -76,6 +76,11 @@ export const BookingTable = () => {
           })
         }
       }
+    } else if (name == 'expectedArrivalTime') {
+      setFormData((prev) => ({
+        ...prev,
+        expectedArrivalTime: moment(value).toString()
+      }))
     } else {
       setFormData((prev) => ({
         ...prev,
