@@ -14,6 +14,7 @@ import { useEffect } from 'react'
 import { getCookie } from './Utils/functions'
 import { FoodList } from './components/FoodList'
 import { TermsAndPolicy } from './components/TermsAndPolicy'
+import { PrivacyPolicy } from './components/PrivacyPolicy'
 function App() {
   const navigate = useNavigate()
   useEffect(() => {
@@ -32,6 +33,7 @@ function App() {
             <Route path='/login' element={<Login />} />
             <Route path='/sign-up' element={<SignUp />} />
             <Route path='/terms&conditions' element={<TermsAndPolicy />} />
+            <Route path='/privacy-policy' element={<PrivacyPolicy />} />
             <Route index element={<Home />} />
             <Route path='/' element={<Dashboard />} >
               <Route path="/" element={<Navigate to="/restaurants" replace />} />
