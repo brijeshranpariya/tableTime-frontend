@@ -148,7 +148,7 @@ export const SignUp = () => {
                             onChange={(e) => setPhoneNumber(e.target.value)}
                         />
                         <div className="flex items-center gap-2 my-2">
-                            <input type="checkbox" value={termsCondition.toString()} onChange={(e) => setTermCondition((prev) => !prev)} className="mt-1 h-4 w-4" required />
+                            <input type="checkbox" value={termsCondition.toString()} onChange={() => setTermCondition((prev) => !prev)} className="mt-1 h-4 w-4" required />
                             <Link to={'/terms&conditions'} className="text-blue-500 underline">Terms & Conditions</Link>
                         </div>
                     </>)}
