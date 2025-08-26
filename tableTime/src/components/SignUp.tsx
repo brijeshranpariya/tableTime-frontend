@@ -5,6 +5,7 @@ import { isValidPhoneNumber, setCookie } from "../Utils/functions";
 import { BUTTON_TEXT } from "../common/enums/enums";
 import { generateOtpService, resendOTP, verifyOTP } from "../service/customerSignUpService";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 export const SignUp = () => {
     const firstNumber = useRef<HTMLInputElement | null>(null);
     const secondNumber = useRef<HTMLInputElement | null>(null);
@@ -14,6 +15,7 @@ export const SignUp = () => {
     const sixthNumber = useRef<HTMLInputElement | null>(null);
     const [isOtpSent, setIsOtpSent] = useState<boolean>(false);
     const [countryCode, setCountryCode] = useState<string>('')
+    const [termsCondition, setTermCondition] = useState<boolean>(false)
     const [phoneNumber, setPhoneNumber] = useState<string>('');
     const [headLine, setHeadLine] = useState<string>("What is your phone number?")
     const [note, setNote] = useState<string>("Tap \"Send OTP\" to get an SMS confirmation to help you use TABLETIME.")
@@ -21,6 +23,13 @@ export const SignUp = () => {
     const navigate = useNavigate()
     const handleSubmit = async () => {
         if (buttonText === BUTTON_TEXT.SENT_OTP) {
+            if (termsCondition === false) {
+                toast.warn("Please check the terms and condition", {
+                    position: "top-center",
+                    autoClose: 3000
+                })
+                return
+            }
             if (!isValidPhoneNumber(countryCode, phoneNumber)) {
                 toast.warn("Please enter valid phone number", {
                     position: "top-center",
@@ -55,7 +64,7 @@ export const SignUp = () => {
                     window.location.reload()
                 }
             }
-        }   
+        }
     }
     return (
         <div className='grid grid-rows-12 h-full' >
@@ -70,9 +79,9 @@ export const SignUp = () => {
                     <p className='text-4xl my-5 mx-2 font-bold w-[80%]'>
                         {headLine}
                     </p>
-                    <p className='mx-3 mt-10 font-medium'>{note} <span className="text-gray-400">9979139239</span></p>
+                    <p className='mx-3 mt-10 font-medium'>{note}</p>
                 </div>
-                <div className="flex gap-2 mx-3 mt-16">
+                <div className="mx-3 mt-16">
                     {isOtpSent ? (
                         <div className="flex gap-4 justify-center w-full ">
                             <input
@@ -117,6 +126,7 @@ export const SignUp = () => {
                                 className="w-12 text-center text-2xl border-b-2 border-gray-300 focus:outline-none focus:border-orange-500"
                                 required
                             />
+
                         </div>
 
 
@@ -137,6 +147,10 @@ export const SignUp = () => {
                             name="phoneNumber"
                             onChange={(e) => setPhoneNumber(e.target.value)}
                         />
+                        <div className="flex items-center gap-2 my-2">
+                            <input type="checkbox" value={termsCondition.toString()} onChange={(e) => setTermCondition((prev) => !prev)} className="mt-1 h-4 w-4" required />
+                            <Link to={'/terms&conditions'} className="text-blue-500 underline">Terms & Conditions</Link>
+                        </div>
                     </>)}
                 </div>
                 <div className="w-full flex flex-col gap-3 justify-center items-center px-3 mt-9">
@@ -151,6 +165,7 @@ export const SignUp = () => {
                     <button className="w-full mx-3 text-xl bg-secondary p-2 rounded-md text-white font-semibold hover:cursor-pointer" onClick={() => { handleSubmit() }}>
                         {buttonText}
                     </button>
+
                 </div>
             </div>
         </div>

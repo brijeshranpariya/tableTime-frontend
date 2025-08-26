@@ -13,6 +13,7 @@ import { SignUp } from './components/SignUp'
 import { useEffect } from 'react'
 import { getCookie } from './Utils/functions'
 import { FoodList } from './components/FoodList'
+import { TermsAndPolicy } from './components/TermsAndPolicy'
 function App() {
   const navigate = useNavigate()
   useEffect(() => {
@@ -30,6 +31,7 @@ function App() {
           <Routes>
             <Route path='/login' element={<Login />} />
             <Route path='/sign-up' element={<SignUp />} />
+            <Route path='/terms&conditions' element={<TermsAndPolicy />} />
             <Route index element={<Home />} />
             <Route path='/' element={<Dashboard />} >
               <Route path="/" element={<Navigate to="/restaurants" replace />} />
